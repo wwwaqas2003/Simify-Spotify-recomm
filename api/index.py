@@ -5,9 +5,9 @@ import base64
 app = Flask(__name__)
 
 # Last.fm API key and Spotify credentials
-LASTFM_API_KEY = "464d7defba8fb0898bdcc6c58ca4c188"
-CLIENT_ID = "26410003b4ea40268e6c314ebf39004e"
-CLIENT_SECRET = "8ed33bb5f12749a4ad92c74a639fd0c3"
+LASTFM_API_KEY = "yxy"
+CLIENT_ID = "zyz"
+CLIENT_SECRET = "xyz"
 
 def get_spotify_token():
     auth_str = f"{CLIENT_ID}:{CLIENT_SECRET}"
