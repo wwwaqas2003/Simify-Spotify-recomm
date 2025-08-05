@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Waqas’ NeonTunes Hub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto+Mono:wght@300&display=swap');
+
+    :root {
+      --neon-pink: #ff00ff;
+      --neon-blue: #00ddeb;
+      --neon-green: #39ff14;
+      --bg-dark: #0a0a1a;
+      --glow: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      background: var(--bg-dark);
+      font-family: 'Orbitron', sans-serif;
+      color: var(--glow);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #particles {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue), var(--neon-green), var(--neon-pink));
+      background-size: 400% 400%;
+      animation: flowingInfinity 20s ease infinite;
+      z-index: -3;
+    }
+
+    @keyframes flowingInfinity {
+      0% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+      100% { background-position: 0% 0%; }
+    }
+
+    .container {
+      background: rgba(10, 10, 26, 0.85);
+      border: 2px solid var(--neon-blue);
+      border-radius: 20px;
+      padding: 1.5rem;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 30px rgba(0, 221, 235, 0.5), inset 0 0 15px rgba(255, 0, 255, 0.2);
+      position: relative;
+      animation: pulse 4s infinite ease-in-out;
+      z-index: 1;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 30px rgba(0, 221, 235, 0.5), inset 0 0 15px rgba(255, 0, 255, 0.2);
+      }
+      50% {
+        box-shadow: 0 0 50px rgba(0, 221, 235, 0.8), inset 0 0 20px rgba(255, 0, 255, 0.4);
+      }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 15px var(--neon-blue);
+      white-space: nowrap;
+    }
+
+    .search {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .search input {
+      flex: 1;
+      padding: 0.9rem 1.5rem;
+      border: none;
+      border-radius: 50px 0 0 50px;
+      font-size: 1rem;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--glow);
+      font-family: 'Roboto Mono', monospace;
+      outline: none;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 221, 235, 0.3);
+    }
+
+    .search input:focus {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(0, 221, 235, 0.6);
+      transform: scale(1.02);
+    }
+
+    .search button {
+      padding: 0.9rem 1.5rem;
+      border: none;
+      border-radius: 0 50px 50px 0;
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+      color: var(--glow);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .search button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(57, 255, 20, 0.7);
+    }
+
+    .results {
+      max-height: 400px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: var(--neon-blue) transparent;
+    }
+
+    .results::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .results::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .results::-webkit-scrollbar-thumb {
+      background: var(--neon-blue);
+      border-radius: 10px;
+    }
+
+    .track {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .track::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 0, 255, 0.2), transparent);
+      transition: all 0.5s ease;
+    }
+
+    .track:hover::before {
+      left: 100%;
+    }
+
+    .track:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px rgba(0, 221, 235, 0.5);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .track img {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      margin-right: 1rem;
+      object-fit: cover;
+      box-shadow: 0 0 10px rgba(57, 255, 20, 0.5);
+      animation: subtleFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes subtleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+
+    .track-info h4 {
+      font-size: 1.1rem;
+      background: linear-gradient(45deg, var(--neon-green), var(--neon-blue));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.3rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .track-info p {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.8);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .track audio {
+      margin-left: auto;
+      width: 120px;
+      filter: brightness(1.2);
+    }
+
+    .track audio::-webkit-media-controls-panel {
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+    }
+
+    .badge {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      background: linear-gradient(45deg, var(--neon-pink), var(--neon-green));
+      color: var(--bg-dark);
+      padding: 0.6rem 1.2rem;
+      border-radius: 15px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      box-shadow: 0 0 15px rgba(57, 255, 20, 0.7);
+      animation: pulseBadge 2s infinite;
+      z-index: 2;
+    }
+
+    @keyframes pulseBadge {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+  </style>
+</head>
+<body>
+  <div id="particles"></div>
+
+  <div class="container">
+    <div class="header">
+      <h1>Simify Your Songss</h1>
+    </div>
+    <form class="search" method="POST">
+      <input name="song" type="text" placeholder="Enter a Song..." required>
+      <button type="submit">Discover</button>
+    </form>
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% endif %}
+    {% if recommendations %}
+    <div class="results">
+      {% for r in recommendations %}
+      <div class="track">
+        {% if r.image %}<img src="{{ r.image }}" alt="cover">{% endif %}
+        <div class="track-info">
+          <h4>{{ r.name }}</h4>
+          <p>{{ r.artist }}</p>
+        </div>
+        {% if r.preview %}
+          <audio controls><source src="{{ r.preview }}" type="audio/mpeg"></audio>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="badge">✨ Crafted by Waqas</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    particlesJS("particles", {
+      particles: {
+        number: { value: 80 },
+        color: { value: ["#ff00ff", "#00ddeb", "#39ff14"] },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3, random: true },
+        line_linked: { enable: false },
+        move: {
+          enable: true,
+          speed: 1,
+          direction: "none",
+          random: true,
+          out_mode: "out"
+        }
+      },
+      interactivity: {
+        events: {
+          onhover: { enable: true, mode: "repulse" },
+          onclick: { enable: true, mode: "push" }
+        },
+        modes: {
+          repulse: { distance: 100, duration: 0.4 },
+          push: { particles_nb: 4 }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
